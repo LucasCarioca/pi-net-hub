@@ -1,0 +1,9 @@
+After=multi-user.target
+
+[Service]
+WorkingDirectory=/home/pi/
+User=pi
+ExecStart=/bin/bash -c '/usr/bin/pigpiod && /usr/bin/pigs pud 4 u && /usr/bin/python3 /home/pi/apps/server/app/main.py > /home/pi/apps/logs/piserver.log 2>&1'
+
+[Install]
+WantedBy=multi-user.target
