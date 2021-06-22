@@ -32,12 +32,12 @@ const useStyles = makeStyles({
 const NodeComponent = ({ node, children }) => {
     const classes = useStyles();
     const rebootNode = () => {
-        axios.get(`${config.baseUrl}/reboot/${node.name}`).catch(error => {
+        axios.get(`${config.baseUrl}/nodes/${node.name}/reboot`).catch(error => {
             console.error(error)
         })
     };
     const updateNode = () => {
-        axios.get(`${config.baseUrl}/update/${node.name}`).catch(error => {
+        axios.get(`${config.baseUrl}/nodes/${node.name}/update`).catch(error => {
             console.error(error)
         })
     };
