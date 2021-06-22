@@ -87,19 +87,6 @@ def get_network_climate_info():
     return response
 
 
-# Reboot the pi-net-hub server
-@app.get("/api/reboot")
-def reboot_node():
-    os.system("sudo reboot")
-
-
-# Update and reboot the pi-net-hub server
-@app.get("/api/update")
-def update_software():
-    os.system("cd /home/pi/apps/server && git pull && cd dashboard && /usr/local/bin/npm run build")
-    os.system("sudo reboot")
-
-
 # Reboot all nodes other than the hub
 @app.get('/api/reboot-nodes')
 def reboot_all_nodes():
@@ -117,17 +104,24 @@ def reboot_all_nodes():
 # Reboot a given node
 @app.get('/api/nodes/{name}/reboot')
 def reboot_all_nodes(name: str):
-    for node in network:
-        if node['name'] == name:
-            requests.get(f"http://{node['name']}:{node['port']}/reboot")
+    if name == 'pinet':
+        os.system("sudo reboot")
+    else:
+        for node in network:
+            if node['name'] == name:
+                requests.get(f"http://{node['name']}:{node['port']}/reboot")
 
 
 # Update and reboot a given node
 @app.get('/api/nodes/{name}/update')
 def reboot_all_nodes(name: str):
-    for node in network:
-        if node['name'] == name:
-            requests.get(f"http://{node['name']}:{node['port']}/update")
+    if name == 'pinet':
+        os.system("cd /home/pi/apps/server && git pull && cd dashboard && /usr/local/bin/npm run build")
+        os.system("sudo reboot")
+    else:
+        for node in network:
+            if node['name'] == name:
+                requests.get(f"http://{node['name']}:{node['port']}/update")
 
 
 if __name__ == "__main__":

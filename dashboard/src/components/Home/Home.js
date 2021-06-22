@@ -78,7 +78,7 @@ function Home() {
             </div>
             <div className={classes.section}>
                 <Typography variant={'h2'}>Hub nodes</Typography>
-                <NodeComponent node={{node: "PiNet Hub", location: "office"}}/>
+                <NodeComponent node={{node: "PiNet Hub", name: "pinet", location: "office"}}/>
             </div>
         </Container>
     );
