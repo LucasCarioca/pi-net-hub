@@ -96,7 +96,7 @@ def reboot_node():
 # Update and reboot the pi-net-hub server
 @app.get("/api/update")
 def update_software():
-    os.system("cd /home/pi/apps/dht11/ && git pull && cd ../server && git pull")
+    os.system("cd /home/pi/apps/server && git pull && cd dashboard && /usr/local/bin/npm run build")
     os.system("sudo reboot")
 
 
