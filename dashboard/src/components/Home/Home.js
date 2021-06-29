@@ -1,14 +1,14 @@
 import React from 'react';
-import {useEffect, useState} from 'react';
-import {LinearProgress, Grid, Typography, Container, makeStyles} from "@material-ui/core";
-import {Alert} from "@material-ui/lab";
-import {ClimateControlNodeComponent, NodeComponent} from "../NodeComponent";
+import { useEffect, useState } from 'react';
+import { LinearProgress, Grid, Typography, Container, makeStyles } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import { ClimateControlNodeComponent, NodeComponent } from "../NodeComponent";
 import LoopIcon from '@material-ui/icons/Loop';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import axios from 'axios';
 import Button from "@material-ui/core/Button";
-import {config} from "../../config";
+import { config } from "../../config";
 
 const useStyles = makeStyles({
     root: {
@@ -19,10 +19,9 @@ const useStyles = makeStyles({
         margin: '.5rem'
     },
     section: {
-        marginTop: '3rem',
+        margin: '3rem',
     }
 });
-
 
 function Home() {
     const classes = useStyles();
@@ -41,11 +40,8 @@ function Home() {
         })
     };
     useEffect(() => {
-        setInterval(() => setReload(new Date()), 5 * 1000);
-    }, []);
-    useEffect(() => {
-        axios.get(`${config.baseUrl}/climate`).then(response => {
-            setNodes(response.data);
+        axios.get(`${config.baseUrl}`).then(response => {
+            setNodes(response.data.nodes);
         }).catch(error => {
             setError("Something went wrong");
         }).finally(() => {
@@ -57,30 +53,28 @@ function Home() {
         setReload(new Date());
     };
     if (error !== "") return <Alert severity={'error'}>{error}</Alert>
-    if (loading) return <LinearProgress/>
+    if (loading) return <LinearProgress />
     return (
-        <Container className={classes.root}>
-            <Typography variant={'h1'}>PiNet</Typography>
+        <div className={classes.root}>
             <div className={classes.section}>
                 <Button variant={'contained'} size={'large'} className={classes.globalButton}
-                        onClick={triggerReload}><LoopIcon/> &nbsp; Force reload </Button>
+                    onClick={triggerReload}><LoopIcon /> &nbsp; Force reload </Button>
                 <Button variant={'contained'} size={'large'} className={classes.globalButton}
-                        onClick={rebootAll}><PowerSettingsNewIcon/> &nbsp; Reboot all nodes </Button>
+                    onClick={rebootAll}><PowerSettingsNewIcon /> &nbsp; Reboot all nodes </Button>
                 <Button variant={'contained'} size={'large'} className={classes.globalButton}
-                        onClick={updateAll}><GetAppIcon/> &nbsp; Update all nodes </Button>
+                    onClick={updateAll}><GetAppIcon /> &nbsp; Update all nodes </Button>
             </div>
             <div className={classes.section}>
-                <Typography variant={'h2'}>Climate control nodes</Typography>
                 <Grid container>
-                    {nodes.map(node => <Grid item lg={4} md={6} xs={12}><ClimateControlNodeComponent
-                        reload={triggerReload} node={node}/></Grid>)}
+                    {nodes.map(node => <Grid item lg={4} md={6} xs={12}>
+                        <ClimateControlNodeComponent node={node} />
+                    </Grid>)}
                 </Grid>
             </div>
             <div className={classes.section}>
-                <Typography variant={'h2'}>Hub nodes</Typography>
-                <NodeComponent node={{node: "PiNet Hub", name: "pinet", location: "office"}}/>
+                <NodeComponent node={{ node: "PiNet Hub", name: "pinet", location: "office" }} />
             </div>
-        </Container>
+        </div>
     );
 }
 

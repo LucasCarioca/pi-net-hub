@@ -1,3 +1,4 @@
+import fastapi
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -113,28 +114,32 @@ def reboot_all_nodes():
     for node in network:
         requests.get(f"http://{node['name']}:{node['port']}/update")
 
+# control nodes
+@app.get('/api/nodes/{name}/{command}')
+def reboot_all_nodes(name: str, command: str, response: fastapi.Response):
+    for node in network:
+        if node['name'] == name:
+            try:
+                results = requests.get(f"http://{node['name']}:{node['port']}/{command}", timeout=10)
+                print(results)
+                return results.json()
+            except:
+                response.status_code = fastapi.status.HTTP_404_NOT_FOUND
+                return {
+                    "message": f"server {name} not found"
+                }
 
-# Reboot a given node
-@app.get('/api/nodes/{name}/reboot')
-def reboot_all_nodes(name: str):
-    if name == 'pinet':
-        os.system("sudo reboot")
-    else:
-        for node in network:
-            if node['name'] == name:
-                requests.get(f"http://{node['name']}:{node['port']}/reboot")
+# Reboot the hub
+@app.get('/api/reboot')
+def reboot_all_nodes():
+    os.system("sudo reboot")
 
 
-# Update and reboot a given node
-@app.get('/api/nodes/{name}/update')
-def reboot_all_nodes(name: str):
-    if name == 'pinet':
-        os.system("cd /home/pi/apps/server && git pull && cd dashboard && /usr/local/bin/npm run build")
-        os.system("sudo reboot")
-    else:
-        for node in network:
-            if node['name'] == name:
-                requests.get(f"http://{node['name']}:{node['port']}/update")
+# Update and reboot the hub
+@app.get('/api/update')
+def reboot_all_nodes():
+    os.system("cd /home/pi/apps/server && git pull && cd dashboard && /usr/local/bin/npm run build")
+    os.system("sudo reboot")
 
 
 if __name__ == "__main__":

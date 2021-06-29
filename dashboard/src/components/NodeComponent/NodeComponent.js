@@ -43,7 +43,7 @@ const NodeComponent = ({ node, children }) => {
     };
     return (<Card className={classes.root}>
         <div className={classes.container}>
-            <Typography variant={'h4'}>{node.node}</Typography>
+            <Typography variant={'h3'}>{node.node}</Typography>
             <Typography>Location: {node.location}</Typography>
         </div>
         {children}

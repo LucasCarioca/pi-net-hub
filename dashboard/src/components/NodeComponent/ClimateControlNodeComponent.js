@@ -1,8 +1,12 @@
-import {Typography, Card, makeStyles} from '@material-ui/core';
+import { useState, useEffect } from 'react';
+import { Typography, Card, makeStyles, LinearProgress } from '@material-ui/core';
 import OpacityIcon from '@material-ui/icons/Opacity';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import WarningIcon from '@material-ui/icons/Warning';
-import {NodeComponent} from "./index";
+import { NodeComponent } from "./index";
+import { Alert } from "@material-ui/lab";
+import axios from 'axios';
+import { config } from '../../config';
 
 const useStyles = makeStyles({
     root: {
@@ -14,6 +18,10 @@ const useStyles = makeStyles({
         paddingBottom: '2rem',
         paddingLeft: '2rem',
         paddingRight: '2rem',
+        height: '10rem',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly'
     },
     measurement: {
         padding: 'auto auto',
@@ -21,21 +29,15 @@ const useStyles = makeStyles({
         display: 'flex',
         textAlign: 'center'
     },
-    controls: {
-        borderTop: 'solid 1px #2c3e50',
-        height: '3rem',
-        display: 'flex',
-        textAlign: 'center',
-        justifyContent: 'space-evenly',
-        color: '#ecf0f1'
-    },
-    controlsButton: {
-        width: '100%',
-        height: '100%',
-        color: '#ecf0f1'
-    },
     section: {
-        margin: '1rem'
+        marginLeft: '2rem',
+        marginRight: '2rem',
+        fontSize: '2rem'
+    },
+    sectionIcon: {
+        marginLeft: '2rem',
+        marginRight: '2rem',
+        fontSize: '3rem'
     },
     warning: {
         padding: 'auto auto',
@@ -46,20 +48,40 @@ const useStyles = makeStyles({
     }
 });
 
-const ClimateControlNodeComponent = ({node}) => {
+const ClimateControlNodeComponent = ({ node }) => {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [climateData, setClimateData] = useState();
+    const [reload, setReload] = useState(new Date());
+    useEffect(() => {
+        setInterval(() => setReload(new Date()), 60 * 1000);
+    }, []);
+    useEffect(() => {
+        setLoading(true)
+        axios.get(`${config.baseUrl}/nodes/${node.name}/climate`).then(response => {
+                setClimateData(response.data);
+            }).catch(error => {
+                setError(error.message);
+            }).finally(() => setLoading(false))
+    }, [reload])
     const classes = useStyles();
     return (<NodeComponent node={node}>
-        <div className={classes.container}>
-            <div className={classes.measurement}>
-                <AcUnitIcon className={classes.section}/>
-                <Typography className={classes.section}>{node.temp}*C</Typography>
+        {loading ? <LinearProgress /> : null}
+        {climateData ? (
+
+            <div className={classes.container}>
+                <div className={classes.measurement}>
+                    <AcUnitIcon className={classes.sectionIcon} />
+                    <Typography className={classes.section}>{climateData.temp}*C</Typography>
+                </div>
+                <div className={climateData.humidity < 60 ? classes.measurement : classes.warning}>
+                    <OpacityIcon className={classes.sectionIcon} />
+                    <Typography className={classes.section}>{climateData.humidity}% </Typography>
+                    {climateData.humidity > 60 ? <WarningIcon className={classes.sectionIcon} /> : null}
+                </div>
             </div>
-            <div className={node.humidity < 60 ? classes.measurement : classes.warning}>
-                <OpacityIcon className={classes.section}/>
-                <Typography className={classes.section}>{node.humidity}% </Typography>
-                {node.humidity > 60 ? <WarningIcon className={classes.section}/> : null}
-            </div>
-        </div>
+        ) : null}
+        {error !== '' ? <Alert severity="error">{error}</Alert> : null}
     </NodeComponent>)
 };
 
