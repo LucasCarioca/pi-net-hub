@@ -19,7 +19,7 @@ const useStyles = makeStyles({
         margin: '.5rem'
     },
     section: {
-        margin: '3rem',
+        marginTop: '3rem',
     }
 });
 
