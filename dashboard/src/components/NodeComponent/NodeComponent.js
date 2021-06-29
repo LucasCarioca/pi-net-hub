@@ -31,13 +31,14 @@ const useStyles = makeStyles({
 
 const NodeComponent = ({ node, children }) => {
     const classes = useStyles();
+    const commandBaseUrl = node.name !== 'pinet' ? `${config.baseUrl}/nodes/${node.name}` : config.baseUrl;
     const rebootNode = () => {
-        axios.get(`${config.baseUrl}/nodes/${node.name}/reboot`).catch(error => {
+        axios.get(`${commandBaseUrl}/reboot`).catch(error => {
             console.error(error)
         })
     };
     const updateNode = () => {
-        axios.get(`${config.baseUrl}/nodes/${node.name}/update`).catch(error => {
+        axios.get(`${commandBaseUrl}/update`).catch(error => {
             console.error(error)
         })
     };
