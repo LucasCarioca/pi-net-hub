@@ -15,8 +15,11 @@ const useStyles = makeStyles({
         marginTop: '3rem',
         color: '#ecf0f1'
     },
+    globalButtonWrapper: {
+        margin: '.5rem',
+    },
     globalButton: {
-        margin: '.5rem'
+        width: '100%'
     },
     section: {
         marginTop: '3rem',
@@ -56,14 +59,22 @@ function Home() {
     if (loading) return <LinearProgress />
     return (
         <div className={classes.root}>
-            <div className={classes.section}>
-                <Button variant={'contained'} size={'large'} className={classes.globalButton}
-                    onClick={triggerReload}><LoopIcon /> &nbsp; Force reload </Button>
-                <Button variant={'contained'} size={'large'} className={classes.globalButton}
-                    onClick={rebootAll}><PowerSettingsNewIcon /> &nbsp; Reboot all nodes </Button>
-                <Button variant={'contained'} size={'large'} className={classes.globalButton}
-                    onClick={updateAll}><GetAppIcon /> &nbsp; Update all nodes </Button>
-            </div>
+            {/* <div className={classes.section}>
+                <Grid container>
+                    <Grid item lg={3} md={4} xs={12} className={classes.globalButtonWrapper}>
+                        <Button variant={'contained'} size={'large'} className={classes.globalButton}
+                            onClick={triggerReload}><LoopIcon /> &nbsp; Force reload </Button>
+                    </Grid>
+                    <Grid item lg={3} md={4} xs={12} className={classes.globalButtonWrapper}>
+                        <Button variant={'contained'} size={'large'} className={classes.globalButton}
+                            onClick={rebootAll}><PowerSettingsNewIcon /> &nbsp; Reboot all nodes </Button>
+                    </Grid>
+                    <Grid item lg={3} md={4} xs={12} className={classes.globalButtonWrapper}>
+                        <Button variant={'contained'} size={'large'} className={classes.globalButton}
+                            onClick={updateAll}><GetAppIcon /> &nbsp; Update all nodes </Button>
+                    </Grid>
+                </Grid>
+            </div> */}
             <div className={classes.section}>
                 <Grid container>
                     {nodes.map(node => <Grid item lg={4} md={6} xs={12}>
