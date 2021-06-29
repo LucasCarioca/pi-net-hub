@@ -57,7 +57,20 @@ network = [
         "roles": [
             "climate"
         ]
-    }
+    },
+    {
+        "node": "Guest Bedroom",
+        "name": "piz04",
+        "port": 8000,
+        "location": "guest-bedroom",
+        "device": "Pi Zero W",
+        "sensors": [
+            "dht11"
+        ],
+        "roles": [
+            "climate"
+        ]
+    },
 ]
 
 
