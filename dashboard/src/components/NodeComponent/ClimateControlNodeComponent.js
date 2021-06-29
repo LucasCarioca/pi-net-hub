@@ -30,13 +30,13 @@ const useStyles = makeStyles({
         textAlign: 'center'
     },
     section: {
-        marginLeft: '2rem',
-        marginRight: '2rem',
+        marginLeft: '.5rem',
+        marginRight: '.5rem',
         fontSize: '2rem'
     },
     sectionIcon: {
-        marginLeft: '2rem',
-        marginRight: '2rem',
+        marginLeft: '.5rem',
+        marginRight: '.5rem',
         fontSize: '3rem'
     },
     warning: {
