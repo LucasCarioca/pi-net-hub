@@ -1,10 +1,12 @@
 name: Docker Build
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
 env:
   REGISTRY: ghcr.io
   API_IMAGE_NAME: ${{ github.repository }}
   UI_IMAGE_NAME: ${{ github.repository }}-ui
+  VERSION: ${{ github.event.release.tag_name }}
 jobs:
   build-api:
     runs-on: ubuntu-latest
