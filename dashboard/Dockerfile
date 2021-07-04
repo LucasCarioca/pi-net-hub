@@ -8,6 +8,7 @@ RUN npm ci
 
 COPY ./src ./src
 COPY ./public ./public
+COPY ./prod.env ./.env
 
 RUN npm run build
 
