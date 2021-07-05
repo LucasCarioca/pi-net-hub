@@ -4,8 +4,27 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import requests
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from starlette.exceptions import HTTPException
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="./dashboard/build/static"), name="frontend-app")
+templates = Jinja2Templates(directory="./dashboard/build")
+
+@app.route("/")
+async def catch_all(request: fastapi.Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.exception_handler(HTTPException)
+async def catch_all(request: fastapi.Request, exception: HTTPException):
+    if exception.status_code == 404:
+        return templates.TemplateResponse("index.html", {"request": request})
+    return JSONResponse(
+        status_code=exception.status_code,
+        content={"message": f"{exception.status_code}: {exception.detail}"},
+    )
 
 origins = [
     "*"

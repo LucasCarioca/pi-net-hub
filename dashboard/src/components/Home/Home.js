@@ -33,17 +33,17 @@ function Home() {
     const [loading, setLoading] = useState(true);
     const [reload, setReload] = useState(new Date());
     const rebootAll = () => {
-        axios.get(`${config.baseUrl}/reboot-nodes`).catch(error => {
+        axios.get(`${config.baseUrl}/reboot-nodes/`).catch(error => {
             console.error(error)
         })
     };
     const updateAll = () => {
-        axios.get(`${config.baseUrl}/update-nodes`).catch(error => {
+        axios.get(`${config.baseUrl}/update-nodes/`).catch(error => {
             console.error(error)
         })
     };
     useEffect(() => {
-        axios.get(`${config.baseUrl}`).then(response => {
+        axios.get(`${config.baseUrl}/`).then(response => {
             setNodes(response.data.nodes);
         }).catch(error => {
             setError("Something went wrong");

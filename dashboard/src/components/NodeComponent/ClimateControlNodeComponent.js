@@ -58,7 +58,7 @@ const ClimateControlNodeComponent = ({ node }) => {
     }, []);
     useEffect(() => {
         setLoading(true)
-        axios.get(`${config.baseUrl}/nodes/${node.name}/climate`).then(response => {
+        axios.get(`${config.baseUrl}/nodes/${node.name}/climate/`).then(response => {
                 setClimateData(response.data);
             }).catch(error => {
                 setError(error.message);
