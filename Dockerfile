@@ -14,12 +14,11 @@ RUN npm run build
 
 FROM python
 
-RUN pip3 install fastapi uvicorn uvicorn[standard] requests
+COPY ./requirements.txt ./
+RUN pip3 install -r requirements.txt
 
-WORKDIR /app
-
-COPY ./app ./
-COPY --from=builder-ui ./dashboard ./app/
+COPY ./app ./app
+COPY --from=builder-ui ./dashboard ./dashboard
 
 CMD ["python", "/app/main.py"]
 
