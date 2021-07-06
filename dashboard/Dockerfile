@@ -1,4 +1,4 @@
-FROM node:14 as builder
+FROM amd64/node:14 as builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY ./prod.env ./.env
 
 RUN npm run build
 
-FROM nginx
+FROM amd64/nginx
 
 COPY --from=builder /app/build /usr/share/nginx/html
 
