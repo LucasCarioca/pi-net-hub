@@ -41,7 +41,7 @@ app.add_middleware(
 network = [
     {
         "node": "Living Room",
-        "name": "piz01",
+        "name": "piz01.local",
         "port": 8000,
         "location": "living-room",
         "device": "Pi Zero W",
@@ -54,7 +54,7 @@ network = [
     },
     {
         "node": "Office",
-        "name": "piz02",
+        "name": "piz02.local",
         "port": 8000,
         "location": "office",
         "device": "Pi Zero",
@@ -67,7 +67,7 @@ network = [
     },
     {
         "node": "Master Bedroom",
-        "name": "piz03",
+        "name": "piz03.local",
         "port": 8000,
         "location": "master-betroom",
         "device": "Pi Zero W",
@@ -80,7 +80,7 @@ network = [
     },
     {
         "node": "Guest Bedroom",
-        "name": "piz04",
+        "name": "piz04.local",
         "port": 8000,
         "location": "guest-bedroom",
         "device": "Pi Zero W",
