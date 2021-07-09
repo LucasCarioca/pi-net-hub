@@ -92,7 +92,7 @@ network = [
     },
 ]
 
-@app.get("/api/health")
+@app.get("/api/v1/health")
 def health():
     return {
         "message": "up"
