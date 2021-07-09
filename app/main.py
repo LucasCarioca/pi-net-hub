@@ -16,7 +16,6 @@ templates = Jinja2Templates(directory="./dashboard/build")
 async def catch_all(request: fastapi.Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
 @app.exception_handler(HTTPException)
 async def catch_all(request: fastapi.Request, exception: HTTPException):
     if exception.status_code == 404:
@@ -93,6 +92,11 @@ network = [
     },
 ]
 
+@app.get("/api/health")
+def health():
+    return {
+        "message": "up"
+    }
 
 @app.get("/api")
 def get_node_info():
