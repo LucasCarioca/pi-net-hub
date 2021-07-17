@@ -16,6 +16,7 @@ function App() {
                 </Route>
                 <Route path={"*"}>
                     <Home/>
+                    <a href={"https://api.ldkube.io"}></a>
                 </Route>
             </Switch>
         </Router>
