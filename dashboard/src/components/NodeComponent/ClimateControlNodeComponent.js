@@ -45,6 +45,10 @@ const useStyles = makeStyles({
         display: 'flex',
         textAlign: 'center',
         color: '#e74c3c'
+    },
+    time: {
+        paddingLeft: '2rem',
+        paddingRight: '2rem',
     }
 });
 
@@ -67,7 +71,7 @@ const ClimateControlNodeComponent = ({ node }) => {
     const classes = useStyles();
     return (<NodeComponent node={node}>
         {loading ? <LinearProgress /> : null}
-        {climateData ? (
+        {climateData ? (<>
 
             <div className={classes.container}>
                 <div className={classes.measurement}>
@@ -80,7 +84,8 @@ const ClimateControlNodeComponent = ({ node }) => {
                     {climateData.humidity > 60 ? <WarningIcon className={classes.sectionIcon} /> : null}
                 </div>
             </div>
-        ) : null}
+            <p className={classes.time}>updated at: {climateData.UpdatedAt}</p>
+        </>) : null}
         {error !== '' ? <Alert severity="error">{error}</Alert> : null}
     </NodeComponent>)
 };
