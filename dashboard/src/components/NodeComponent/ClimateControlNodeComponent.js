@@ -72,11 +72,11 @@ const ClimateControlNodeComponent = ({ node }) => {
             <div className={classes.container}>
                 <div className={classes.measurement}>
                     <AcUnitIcon className={classes.sectionIcon} />
-                    <Typography className={classes.section}>{climateData.temperature}*C</Typography>
+                    <Typography className={classes.section}>{climateData.temperature}</Typography>
                 </div>
                 <div className={climateData.humidity < 60 ? classes.measurement : classes.warning}>
                     <OpacityIcon className={classes.sectionIcon} />
-                    <Typography className={classes.section}>{climateData.humidity}% </Typography>
+                    <Typography className={classes.section}>{climateData.humidity}</Typography>
                     {climateData.humidity > 60 ? <WarningIcon className={classes.sectionIcon} /> : null}
                 </div>
             </div>
