@@ -12,9 +12,11 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="./dashboard/build/static"), name="frontend-app")
 templates = Jinja2Templates(directory="./dashboard/build")
 
+
 @app.route("/")
 async def catch_all(request: fastapi.Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
 
 @app.exception_handler(HTTPException)
 async def catch_all(request: fastapi.Request, exception: HTTPException):
@@ -24,6 +26,7 @@ async def catch_all(request: fastapi.Request, exception: HTTPException):
         status_code=exception.status_code,
         content={"message": f"{exception.status_code}: {exception.detail}"},
     )
+
 
 origins = [
     "*"
@@ -40,8 +43,7 @@ app.add_middleware(
 network = [
     {
         "node": "Living Room",
-        "name": "192.168.1.200",
-        "port": 8000,
+        "name": "piz01",
         "location": "living-room",
         "device": "Pi Zero W",
         "sensors": [
@@ -53,8 +55,7 @@ network = [
     },
     {
         "node": "Office",
-        "name": "192.168.1.201",
-        "port": 8000,
+        "name": "piz02",
         "location": "office",
         "device": "Pi Zero",
         "sensors": [
@@ -66,9 +67,8 @@ network = [
     },
     {
         "node": "Master Bedroom",
-        "name": "192.168.1.203",
-        "port": 8000,
-        "location": "master-betroom",
+        "name": "piz03",
+        "location": "master-room",
         "device": "Pi Zero W",
         "sensors": [
             "dht22"
@@ -79,9 +79,8 @@ network = [
     },
     {
         "node": "Guest Bedroom",
-        "name": "192.168.1.202",
-        "port": 8000,
-        "location": "guest-bedroom",
+        "name": "piz04",
+        "location": "guest-room",
         "device": "Pi Zero W",
         "sensors": [
             "dht11"
@@ -92,11 +91,13 @@ network = [
     },
 ]
 
+
 @app.get("/api/v1/health")
 def health():
     return {
         "message": "up"
     }
+
 
 @app.get("/api")
 def get_node_info():
@@ -126,20 +127,21 @@ def get_network_climate_info():
 
 # Reboot all nodes other than the hub
 @app.get('/api/reboot-nodes')
-def reboot_all_nodes():
+def reboot_nodes():
     for node in network:
         requests.get(f"http://{node['name']}:{node['port']}/reboot")
 
 
 # Update and reboot all nodes other than the hub
 @app.get('/api/update-nodes')
-def reboot_all_nodes():
+def update_nodes():
     for node in network:
         requests.get(f"http://{node['name']}:{node['port']}/update")
 
+
 # control nodes
 @app.get('/api/nodes/{name}/{command}')
-def reboot_all_nodes(name: str, command: str, response: fastapi.Response):
+def command_nodes(name: str, command: str, response: fastapi.Response):
     for node in network:
         if node['name'] == name:
             try:
@@ -152,17 +154,20 @@ def reboot_all_nodes(name: str, command: str, response: fastapi.Response):
                     "message": f"server {name} not found"
                 }
 
-# Reboot the hub
-@app.get('/api/reboot')
-def reboot_all_nodes():
-    os.system("sudo reboot")
 
-
-# Update and reboot the hub
-@app.get('/api/update')
-def reboot_all_nodes():
-    os.system("cd /home/pi/apps/server && git pull && cd dashboard && /usr/local/bin/npm run build")
-    os.system("sudo reboot")
+# control nodes
+@app.get('/api/piz/{name}')
+def read_node(name: str, response: fastapi.Response):
+    try:
+        results = requests.get(f"http://192.168.1.211/api/v1/climate-records?field=node&value={name}&last=true",
+                               timeout=10)
+        print(results)
+        return results.json()
+    except:
+        response.status_code = fastapi.status.HTTP_404_NOT_FOUND
+        return {
+            "message": f"server {name} not found"
+        }
 
 
 if __name__ == "__main__":

@@ -82,9 +82,6 @@ function Home() {
                     </Grid>)}
                 </Grid>
             </div>
-            <div className={classes.section}>
-                <NodeComponent node={{ node: "PiNet Hub", name: "pinet", location: "office" }} />
-            </div>
         </div>
     );
 }

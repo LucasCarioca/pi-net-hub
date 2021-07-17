@@ -58,7 +58,7 @@ const ClimateControlNodeComponent = ({ node }) => {
     }, []);
     useEffect(() => {
         setLoading(true)
-        axios.get(`${config.baseUrl}/nodes/${node.name}/climate/`).then(response => {
+        axios.get(`${config.baseUrl}/piz/${node.name}/`).then(response => {
                 setClimateData(response.data);
             }).catch(error => {
                 setError(error.message);
@@ -72,7 +72,7 @@ const ClimateControlNodeComponent = ({ node }) => {
             <div className={classes.container}>
                 <div className={classes.measurement}>
                     <AcUnitIcon className={classes.sectionIcon} />
-                    <Typography className={classes.section}>{climateData.temp}*C</Typography>
+                    <Typography className={classes.section}>{climateData.temperature}*C</Typography>
                 </div>
                 <div className={climateData.humidity < 60 ? classes.measurement : classes.warning}>
                     <OpacityIcon className={classes.sectionIcon} />
