@@ -16,7 +16,7 @@ function App() {
                 </Route>
                 <Route path={"*"}>
                     <Home/>
-                    <a href={"https://api.ldkube.io"}></a>
+                    <a href={"https://api.ldkube.io"}>Check node health</a>
                 </Route>
             </Switch>
         </Router>
