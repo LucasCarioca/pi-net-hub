@@ -159,7 +159,7 @@ def command_nodes(name: str, command: str, response: fastapi.Response):
 @app.get('/api/piz/{name}')
 def read_node(name: str, response: fastapi.Response):
     try:
-        results = requests.get(f"http://192.168.1.211/api/v1/climate-records?field=node&value={name}&last=true",
+        results = requests.get(f"http://192.168.1.152/api/v1/climate-records?field=node&value={name}&last=true",
                                timeout=10)
         print(results)
         return results.json()
